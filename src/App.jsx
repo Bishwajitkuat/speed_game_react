@@ -10,6 +10,7 @@ class App extends React.Component {
     life: 0,
     scoreUpdate: false,
     clicked: false,
+    btnStatus: false,
   };
   timer;
 
@@ -37,6 +38,16 @@ class App extends React.Component {
 
   gameClose = () => {
     console.log("game end");
+    this.setState({
+      options: [1, 2, 3, 4],
+      currentOption: 0,
+      score: 0,
+      speed: 1000,
+      life: 0,
+      scoreUpdate: false,
+      clicked: false,
+    });
+    clearTimeout(this.timer);
   };
 
   handleClick = (item) => {
@@ -52,7 +63,12 @@ class App extends React.Component {
     }
   };
   handleStart = () => {
+    this.setState({ btnStatus: true });
     this.gamePlay();
+  };
+  handleStop = () => {
+    this.setState({ btnStatus: false });
+    this.gameClose();
   };
   render() {
     return (
@@ -68,7 +84,11 @@ class App extends React.Component {
             />
           ))}
         </div>
-        <button onClick={this.handleStart}>Start</button>
+        {!this.state.btnStatus ? (
+          <button onClick={this.handleStart}>Start</button>
+        ) : (
+          <button onClick={this.handleStop}>Stop</button>
+        )}
       </div>
     );
   }
